@@ -1,0 +1,10 @@
+Host: 162.241.217.141
+Protocol: SFTP
+Logon Type: Normal
+Username: ifzqzxmy
+password : GiancarloW$000
+Port :22
+
+ifzqzxmy
+
+PIN: 721897
