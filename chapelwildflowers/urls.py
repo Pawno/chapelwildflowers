@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from website.views import subscribe, imageSubmissions
+    from website.views import subscribe, imageSubmissions
 
 
 urlpatterns = [

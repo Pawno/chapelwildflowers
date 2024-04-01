@@ -38,12 +38,16 @@ def subscribe(request):
 def imageSubmissions(request):
     # TODO add a rate limiter on this endpoint
     print("REQUESTREQUESTREQUESTREQUEST REQUESTREQUESTREQUEST")
-    breakpoint()
-    if request.method == "POST" and request.FILES.getlist("myfile"):
-        files = request.FILES.getlist('myfile')
-        fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, "for_review"))
-        for file in files:
-            fs.save(file.name, file)
-        return JsonResponse({"message": "Files uploaded successfully"}, status=201)
+    if request.method == "POST" and request.FILES.getlist("fileInput"):
+        files = request.FILES.getlist("fileInput")
+        if files[0]:
+            fs = FileSystemStorage(
+                location=os.path.join(settings.MEDIA_ROOT, "for_review")
+            )
+            for file in files:
+                fs.save(file.name, file)
+            return JsonResponse({"message": "Files uploaded successfully"}, status=201)
+        else:
+            return JsonResponse({"error": "No files."}, status=400)
     else:
         return JsonResponse({"error": "Invalid request."}, status=400)

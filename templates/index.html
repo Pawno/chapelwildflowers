@@ -117,7 +117,7 @@
 					<h2
 						style="font-family: sans-serif; color: rgb(red, rgb(110, 110, 110), blue); text-align: start; font-size: 18px;">
 						50 Quincy St., Cambridge, MA 02138</h2>
-					<form action="/imageSubmissions/" method="post" enctype="multipart/form-data">
+					<form id="imageForm" action="/imageSubmissions/" method="post" enctype="multipart/form-data">
 						<label for="fileInput">Upload your photos of the wildflowers:</label>
 						<input type="file" id="fileInput" name="myfile" accept="image/*" multiple>
 						<img id="preview" width="200px">
@@ -295,22 +295,12 @@
 		var blogButton = document.getElementById('openBlog')
 		blogButton.addEventListener('click', () => {
 
-			// TODO convert these animations to transform: translate() css transitions because those are more performant 
-			// and better for what we want to do (no re-laying-out of children, just translation)
 			if (blogOpen) {
-				// document.getElementById('slideshowColumn').style.width = '80%';
 				document.getElementById('slideshowColumn').style.flex = '4';
-				// document.getElementById('slider').style.transform = 'translateX(80vw)';
-				// document.getElementById('blogColumn').style.left = '100%';
-				// document.getElementById('slideshowCarousel').style.display = 'none';
 				blogButton.innerHTML = "Read our blog ->"
 				blogOpen = false;
 			} else {
-				// document.getElementById('slideshowColumn').style.width = '20%';
 				document.getElementById('slideshowColumn').style.flex = '.666';
-				// document.getElementById('slider').style.transform = 'translateX(20vw)';
-				// document.getElementById('blogColumn').style.left = '40%';
-				// document.getElementById('slideshowCarousel').style.display = 'none';
 				blogButton.innerHTML = "<- View our photos"
 				blogOpen = true;
 			}
@@ -320,6 +310,33 @@
 			e.preventDefault();
 			console.log("PREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETED")
 		});
+
+		document.getElementById('imageForm').addEventListener('submit', function (e) {
+			e.preventDefault(); // This line prevents the form from submitting normally
+
+			var fileInput = document.getElementById('fileInput');
+			var files = fileInput.files;
+			var formData = new FormData();
+			for (var i = 0; i < files.length; i++) {
+				formData.append('fileInput', files[i]);
+			}
+
+			fetch('/imageSubmissions/', {
+				method: 'POST',
+				body: formData
+			})
+				.then(response => { console.log(response); return response.json(); })
+				.then(data => console.log(data))
+				.catch(error => console.error(error));
+		});
+
+
+		function preventDefault(event) {
+			console.log("NOT NOT PREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETEDPREVENETED")
+
+			// event.preventDefault();
+			// event.stopPropagation();
+		}
 
 		// document.getElementById('uploadButton').addEventListener('click', function () {
 		// 	var fileInput = document.getElementById('fileInput');
