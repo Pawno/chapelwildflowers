@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <title>Swedenbourg Chapel Wildflowers</title>
+  <link>http://www.chapelwildflowers.com</link>
+  <description>This is an example of an RSS feed</description>
+  <item>
+    <title>Article 1</title>
+    <link>http://www.yourwebsite.com/article1</link>
+    <description>This is the first article</description>
+  </item>
+  <item>
+    <title>Article 2</title>
+    <link>http://www.yourwebsite.com/article2</link>
+    <description>This is the second article</description>
+  </item>
+</channel>
+</rss>
