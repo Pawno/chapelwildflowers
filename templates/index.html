@@ -22,12 +22,27 @@
 		<script src="js/ie-support/html5.js"></script>
 		<script src="js/ie-support/respond.js"></script>
 		<![endif]-->
+	<title>Photo Slideshow</title>
+	<style>
+		#slideshow {
+			width: 500px;
+			height: 500px;
+			overflow: hidden;
+			position: relative;
+		}
 
+		#slideshow img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
 </head>
 
 
-<body>
-	<div class="site-content" style="background-color: #fdfffe;">
+<body style="height: calc(100vh + 200px); overflow-x: hidden !important">
+	<div class="site-content"
+		style="background-color: #fdfffe; width: 100vw; height: calc(100vh + 200px); overflow: hidden !important;">
 		<div class="site-header header-collapsed" style="background: #4a3173; display: none;">
 			<div class="container">
 				<div class="header-bar">
@@ -59,189 +74,295 @@
 			</div>
 		</div> <!-- .site-header -->
 
-		<!DOCTYPE html>
-		<html>
 
-		<head>
-			<title>Photo Slideshow</title>
-			<style>
-				#slideshow {
-					width: 500px;
-					height: 500px;
-					overflow: hidden;
-					position: relative;
-				}
 
-				#slideshow img {
-					position: absolute;
-					width: 100%;
-					height: 100%;
-				}
-			</style>
-		</head>
-
-		<body>
-			<div style="display: flex; flex-direction: row;">
-				<div id="slideshow" style="width: 80%; height: 100vh; flex: 4;">
+		<!-- <body> -->
+		<div id="mainContainer"
+			style="display: flex; flex-direction: row; width: 100vw; overflow: hidden; transition: all; transition-duration: 500ms; height: calc(100vh + 200px);">
+			<div id="slideshowColumn"
+				style="height: 100%; width: 80%; transition: all; transition-duration: 500ms; overflow: hidden; position: relative;">
+				<div id="slideshow" style="height: 100vh; width: 80vw;">
 					<button id="prev"
 						style="position: absolute; top: 50%; z-index: 100; margin: 24px; height: 40px;">Previous</button>
 					<button id="next"
-						style="position: absolute; top: 50%; right: 0; z-index: 100; margin: 24px; height: 70px; width: 70px; border-radius: 50%; border-color: transparent;">Next</button>
+						style="position: absolute; top: 50%; right: 0; z-index: 100; margin: 24px; height: 70px; width: 70px; border-radius: 50%;">Next</button>
 				</div>
-				<div style="display: flex; flex-direction: column; padding: 40px; flex: 1;">
-					<a href="index.html" class="branding">
-						<img src="{% static 'images/logo.png' %}" alt="" class="" style="width: 100%">
-						<h1 style="font-family: sans-serif; color: black; text-align: start;">Swedenborg Chapel
-							Wildflowers
-						</h1>
-						<h2
-							style="font-family: sans-serif; color: rgb(red, rgb(110, 110, 110), blue); text-align: start; font-size: 18px;">
-							50 Quincy St., Cambridge, MA 02138</h2>
-						<label for="fileInput">Upload your photos of the wildflowers:</label>
-						<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
-						<img id="preview" width="200px">
-					</a>
-
-					<form id="subscriptionForm">
-						<label for="email">Email:</label>
-						<input type="email" id="email" required>
-						<button type="submit">Subscribe</button>
-					</form>
+				<div id="slideshowCarousel"
+					style="display: flex; position: absolute; bottom: 0; flex-direction: row; width: 100%; height: 200px; overflow: hidden;">
 				</div>
 			</div>
+			<div id="logoColumn"
+				style="display: flex; flex-direction: column; padding: 40px; width: 20%;  transition: all; transition-duration: 500ms; overflow: hidden; position: absolute; left: 80%; height: 100vh;">
+				<a href="index.html" class="branding">
+					<img src="{% static 'images/logo.png' %}" alt="" class="" style="width: 200px">
+					<h1 style="font-family: sans-serif; color: black; text-align: start;">Swedenborg Chapel
+						Wildflowers
+					</h1>
+					<h2
+						style="font-family: sans-serif; color: rgb(red, rgb(110, 110, 110), blue); text-align: start; font-size: 18px;">
+						50 Quincy St., Cambridge, MA 02138</h2>
+					<label for="fileInput">Upload your photos of the wildflowers:</label>
+					<input type="file" id="fileInput" name="fileInput" accept="image/*" multiple>
+					<img id="preview" width="200px">
+				</a>
 
-			<script>
+				<form id="subscriptionForm">
+					<label for="email">Email:</label>
+					<input type="email" id="email" required>
+					<button type="submit">Subscribe</button>
+				</form>
 
-
-
-				document.getElementById('fileInput').addEventListener('change', function (e) {
-					const file = e.target.files[0];
-					const reader = new FileReader();
-
-					reader.onloadend = function () {
-						document.getElementById('preview').src = reader.result;
-					}
-
-					if (file) {
-						reader.readAsDataURL(file);
-					} else {
-						document.getElementById('preview').src = "";
-					}
-				});
-				let images = [];
-				let currentIndex = 0;
-
-				// fetch('YOUR_BACKEND_API_ENDPOINT')
-				// .then(response => response.json())
-				// .then(urls => {
-				const slideshow = document.getElementById('slideshow');
-				// urls.forEach(url => {
-
-				const img = document.createElement('img');
-				img.src = `/templates/images/image.jpg`;
-				img.style.display = 'none';
-				img.style.boxShadow = 'inset 2px 2px 10px rgba(0,0,0,.4)';
-				slideshow.appendChild(img);
-				images.push(img);
-
-				for (let i = 1; i < 7; i++) {
-					const img = document.createElement('img');
-					img.src = `/templates/images/flower${i}.jpg`;
-					img.style.display = 'none';
-					img.style.boxShadow = 'inset 2px 2px 10px rgba(0,0,0,.4)';
-					slideshow.appendChild(img);
-					images.push(img);
-				}
-
-
-				// );
-				images[0].style.display = 'block';
-				// })
-				// .catch(error => console.error('Error:', error));
-
-				document.getElementById('prev').addEventListener('click', () => {
-					images[currentIndex].style.display = 'none';
-					currentIndex = (currentIndex - 1 + images.length) % images.length;
-					images[currentIndex].style.display = 'block';
-				});
-
-				document.getElementById('next').addEventListener('click', () => {
-					images[currentIndex].style.display = 'none';
-					currentIndex = (currentIndex + 1) % images.length;
-					images[currentIndex].style.display = 'block';
-				});
-			</script>
-		</body>
-
-		</html>
-
-		<div class="hero">
-			<ul class="slides">
-				<li data-bg-image="{% static 'images/slider-1.jpg' %}">
-					<div class="container">
-						<div class="slide-content">
-							<h1 class="slide-title">“They make my heart sing!”<br> – Denyse D.</h1>
-							<br>
-							<div class="container" style="position: relative;">
-								<img src="{% static 'images/icontransparent3.png' %}"
-									style="display: block; margin: 0 auto; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222); opacity: .6;">
-								<img src="{% static 'images/icontransparent2.png' %}"
-									style="display: block; margin: 0 auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-							</div>
-							<br>
-							<small class="date">This site is under construction.</small>
-							<p style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); color:#FFFFFF">50 Quincy Street,
-								Cambridge, MA<br><br>
-
-								Please send comments and/or inquiries to:<br><br>
-
-								chapelwildflowers@gmail.com</p>
-							<!-- <a href="#" class="button">Get more information</a> -->
-						</div>
-					</div>
-				</li>
-			</ul>
+			</div>
+			<div id="blogColumn"
+				style=" display: flex; flex-direction: column; overflow: scroll; position: absolute; left: 100%; width: 60%; transition: all; transition-duration: 500ms; left: 100%; height: 100vh;">
+				<h1 style="margin-top: 20%;">About us:</h1>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h2>Post 1 Title</h2>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h1>Blog:</h1>
+				<h1 style="margin-top: 32px;">Blog:</h1>
+				<h5>by Roy Centralia</h5>
+				<h6>Posted on 3/31/24</h6>
+				<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</div>
 		</div>
+		<button id="openBlog"
+			style="width: auto; position: absolute; bottom: 0; right: 0;  height: 100px; width: calc(20% - 24px); border-radius: 20px  0 0 0;">Read
+			our blog > </button>
 
-		<main class="main-content">
-			<div id="about" class="fullwidth-block">
+	</div>
+	<script>
+
+		document.getElementById('fileInput').addEventListener('change', function (e) {
+			const file = e.target.files[0];
+			const reader = new FileReader();
+
+			reader.onloadend = function () {
+				document.getElementById('preview').src = reader.result;
+			}
+
+			if (file) {
+				reader.readAsDataURL(file);
+			} else {
+				document.getElementById('preview').src = "";
+			}
+		});
+		let images = [];
+		let currentIndex = 0;
+
+		// fetch('YOUR_BACKEND_API_ENDPOINT')
+		// .then(response => response.json())
+		// .then(urls => {
+		const slideshow = document.getElementById('slideshow');
+		// urls.forEach(url => {
+
+
+		for (let i = 1; i < 7; i++) {
+			const img = document.createElement('img');
+			img.src = `/templates/images/flower${i}.jpg`;
+			img.style.display = 'none';
+			img.style.objectFit = "contain"
+			// slideshow.insertBefore(img, slideshowCarousel);
+			slideshow.appendChild(img);
+			images.push(img);
+		}
+
+
+		const img = document.createElement('img');
+		img.src = `/templates/images/image.jpg`;
+		img.style.display = 'none';
+		img.style.objectFit = "contain"
+		// slideshow.insertBefore(img, slideshowCarousel);
+		slideshow.appendChild(img);
+		images.push(img);
+
+
+		// );
+		images[0].style.display = 'block';
+		// })
+		// .catch(error => console.error('Error:', error));
+
+		document.getElementById('prev').addEventListener('click', () => {
+			images[currentIndex].style.display = 'none';
+			currentIndex = (currentIndex - 1 + images.length) % images.length;
+			images[currentIndex].style.display = 'block';
+		});
+
+		document.getElementById('next').addEventListener('click', () => {
+			images[currentIndex].style.display = 'none';
+			currentIndex = (currentIndex + 1) % images.length;
+			images[currentIndex].style.display = 'block';
+		});
+
+		var blogOpen = false;
+		var blogButton = document.getElementById('openBlog')
+		blogButton.addEventListener('click', () => {
+			if (blogOpen) {
+				document.getElementById('slideshowColumn').style.width = '80%';
+				document.getElementById('logoColumn').style.left = '80%';
+				document.getElementById('blogColumn').style.left = '100%';
+				document.getElementById('slideshowCarousel').style.display = 'none';
+				blogButton.innerHTML = "Read our blog ->"
+
+				blogOpen = false;
+			} else {
+				document.getElementById('slideshowColumn').style.width = '20%';
+				document.getElementById('logoColumn').style.left = '20%';
+				document.getElementById('blogColumn').style.left = '40%';
+				document.getElementById('slideshowCarousel').style.display = 'none';
+
+				blogButton.innerHTML = "<- View our photos"
+
+				blogOpen = true;
+			}
+		});
+	</script>
+
+	<div class="hero" style="display: none;">
+		<ul class="slides">
+			<li data-bg-image="{% static 'images/slider-1.jpg' %}">
 				<div class="container">
-					<div class="hero">
-						<ul class="slides">
-							<li data-bg-image="{% static 'images/image.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-							<li data-bg-image="{% static 'images/flower1.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-							<li data-bg-image="{% static 'images/flower2.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-							<li data-bg-image="{% static 'images/flower3.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-							<li data-bg-image="{% static 'images/flower4.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-							<li data-bg-image="{% static 'images/flower5.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-							<li data-bg-image="{% static 'images/flower6.jpg' %}">
-								<div class="container" style="height: 1500px;">
-								</div>
-							</li>
-						</ul>
-					</div> <!-- hero -->
-				</div> <!-- .container -->
-			</div> <!-- #about -->
-			<!--<div class="map" data-latitude="42.376563" data-longitude="-71.113463"></div>-->
-		</main>
+					<div class="slide-content">
+						<h1 class="slide-title">“They make my heart sing!”<br> – Denyse D.</h1>
+						<br>
+						<div class="container" style="position: relative;">
+							<img src="{% static 'images/icontransparent3.png' %}"
+								style="display: block; margin: 0 auto; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222); opacity: .6;">
+							<img src="{% static 'images/icontransparent2.png' %}"
+								style="display: block; margin: 0 auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+						</div>
+						<br>
+						<small class="date">This site is under construction.</small>
+						<p style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); color:#FFFFFF">50 Quincy Street,
+							Cambridge, MA<br><br>
+
+							Please send comments and/or inquiries to:<br><br>
+
+							chapelwildflowers@gmail.com</p>
+						<!-- <a href="#" class="button">Get more information</a> -->
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<main class="main-content" style="display: none;">
+		<div id="about" class="fullwidth-block">
+			<div class="container">
+				<div class="hero">
+					<ul class="slides">
+						<li data-bg-image="{% static 'images/image.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+						<li data-bg-image="{% static 'images/flower1.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+						<li data-bg-image="{% static 'images/flower2.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+						<li data-bg-image="{% static 'images/flower3.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+						<li data-bg-image="{% static 'images/flower4.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+						<li data-bg-image="{% static 'images/flower5.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+						<li data-bg-image="{% static 'images/flower6.jpg' %}">
+							<div class="container" style="height: 1500px;">
+							</div>
+						</li>
+					</ul>
+				</div> <!-- hero -->
+			</div> <!-- .container -->
+		</div> <!-- #about -->
+		<!--<div class="map" data-latitude="42.376563" data-longitude="-71.113463"></div>-->
+	</main>
 	</div>
 
 
