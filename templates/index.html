@@ -47,189 +47,484 @@
 			font-family: sans-serif;
 			color: black;
 			text-align: start;
+			font-family: 'Belgrano', 'Roboto Slab', sans-serif;
+		}
+
+		.headerCollapsed {
+			background-color: goldenrod;
+			position: absolute;
+			width: 100%;
+			left: 0;
+			top: 0;
+			-webkit-transition: .3s ease;
+			transition: .3s ease;
+			z-index: 99;
+			position: fixed;
+			border: none !important;
+			box-shadow: 5px 5px 5px #22222244;
+		}
+
+		.headerCollapsed.sticky {
+			z-index: 999;
+			background: #4a3173;
+
+		}
+
+		.headerCollapsed.sticky #headerBar {
+			padding: 10px 0;
+			/* border-bottom-color: transparent; */
+		}
+
+		#headerBar {
+			* {
+				zoom: 1;
+			}
+
+			background: #4a3173;
+			border: none !important;
+			padding: 30px 0;
+			-webkit-transition: .3s ease;
+			transition: .3s ease;
+		}
+
+		#headerBar:after {
+			content: " ";
+			clear: both;
+			display: block;
+			overflow: hidden;
+			height: 0;
+		}
+
+		.current-menu-item {
+			background: #ecb540 !important;
+			background: -webkit-linear-gradient(#ecb540, #ec8940) !important;
+			background: linear-gradient(#ecb540, #ec8940) !important;
+			color: #86450c !important;
+		}
+
+		button {
+			display: inline-block;
+			background: #ecb540;
+			background: -webkit-linear-gradient(#ecb540, #ec8940);
+			background: linear-gradient(#ecb540, #ec8940);
+			border-bottom: 1px solid #e26d17;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			padding: 10px 25px;
+			border-radius: 30px;
+			color: #86450c;
 		}
 	</style>
+
+	<script async
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_s40ZQtA4OWqLekHJyHDKAEWLcKOJCvY&callback=console.debug&libraries=maps,marker&v=beta">
+		</script>
+	<link rel="stylesheet" href="./style.css" />
 </head>
 
 
-<body style="overflow-x: hidden !important">
-	<div class="site-content"
-		style="background-color: #fdfffe; width: 100vw; height: 100vh; overflow: hidden !important;">
-		<div class="site-header header-collapsed" style="background: #4a3173; display: none;">
+
+
+<body>
+	<div class="site-content" style="background-color: #fdfffe; display: flex; flex-direction: column;">
+		<div class="siteHeader headerCollapsed" style="background: #4a3173; overflow: visible;">
 			<div class="container">
-				<div class="header-bar">
+				<div id="headerBar" style="background: #4a3173;">
 					<a href="index.html" class="branding">
-						<img src="{% static 'images/logo.png' %}" alt="" class="logo">
+						<img src="{% static 'images/logo.svg' %}" alt="" class="logo"
+							style="height: 40px; width: 40px;">
 						<h1 class="site-title">Swedenborg Chapel Wildflowers</h1>
 					</a>
-
-
-					<!-- Default snippet for navigation -->
-					<div class="main-navigation">
-						<!--
-							<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
-							<ul class="menu">
-								<li class="menu-item current-menu-item"><a href="#about">About us</a></li>
-								<li class="menu-item"><a href="#pastors">Pastors</a></li>
-								<li class="menu-item"><a href="#events">Events</a></li>
-								<li class="menu-item"><a href="#seremons">Seremons</a></li>
-								<li class="menu-item"><a href="#families">Families</a></li>
-								<li class="menu-item"><a href="#contact">Contact</a></li>
-							</ul>
-						-->
-						<!-- .menu -->
-					</div> <!-- .main-navigation -->
-
-					<div class="mobile-navigation"></div>
-
+					<!-- <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button> -->
+					<div id="links"
+						style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center; height: 40px;">
+						<a id="blogLink" href="#blogFragment" class="menu-item"
+							style="margin: 1em; color: white; border-radius: 30px; padding: 5px 10px; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); background: linear-gradient(#756096, #655382);font-family: 'Belgrano', 'Roboto Slab', sans-serif;">Blog</a>
+						<a id="photosLink" href="#photosFragment" class="menu-item"
+							style="margin: 1em; color: white; border-radius: 30px; padding: 5px 10px; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); background: linear-gradient(#756096, #655382);font-family: 'Belgrano', 'Roboto Slab', sans-serif;">Photos</a>
+						<a id="aboutUsLink" href="#aboutUsFragment" class="menu-item"
+							style="margin: 1em; color: white; border-radius: 30px; padding: 5px 10px; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2) ; background: linear-gradient(#756096, #655382);font-family: 'Belgrano', 'Roboto Slab', sans-serif;">About
+							us</a>
+					</div>
 				</div>
 			</div>
-		</div> <!-- .site-header -->
+			<!-- .menu -->
+		</div> <!-- .main-navigation -->
 
-
-
-		<!-- <body> -->
-		<div id="mainContainer"
-			style="display: flex; flex-direction: row; overflow: hidden; transition: all; transition-duration: 500ms; height: 100vh; width: 100%;">
-			<div id="slideshowColumn"
-				style="height: 100%; flex:1; transition: all; transition-duration: 500ms; overflow: hidden; position: relative; display: flex; flex-direction: column;">
-				<div id="slideshow" style="flex: 8; width: 100%;">
-					<button id="prev"
-						style="position: absolute; top: 50%; z-index: 100; margin: 24px; height: 40px;">Previous</button>
-					<button id="next"
-						style="position: absolute; top: 50%; right: 0; z-index: 100; margin: 24px; height: 70px; width: 70px; border-radius: 50%;">Next</button>
-				</div>
-				<div id="slideshowCarousel"
-					style="display: flex; flex: 1; flex-direction: row; width: 100%; height: 200px; overflow: hidden; display: none;">
-				</div>
-			</div>
-			<div id="slider"
-				style="display: flex; position: relative; flex-direction: row; height: 100vh; transition: all; transition-duration: 500ms; overflow: hidden; flex: 1; box-shadow: #444a -4px -4px 20px;">
-				<div id="logoColumn"
-					style="display: flex; flex-direction: column; padding: 40px; width: 20vw;  transition: all; transition-duration: 500ms; overflow: hidden; height: 100vh;">
-					<a href="index.html" class="branding">
-						<img src="{% static 'images/logo.png' %}" alt="" class="" style="width: 200px">
-						<h1 style="font-family: sans-serif; color: black; text-align: start;">Swedenborg Chapel
-							Wildflowers
-						</h1>
-					</a>
-
-					<h2
-						style="font-family: sans-serif; color: rgb(red, rgb(110, 110, 110), blue); text-align: start; font-size: 18px;">
-						50 Quincy St., Cambridge, MA 02138</h2>
-					<form id="imageForm" action="/imageSubmissions/" method="post" enctype="multipart/form-data">
-						<label for="fileInput">Upload your photos of the wildflowers:</label>
-						<input type="file" id="fileInput" name="myfile" accept="image/*" multiple>
-						<img id="preview" width="200px">
-						<button type="submit" id="uploadButton">Upload</button>
-					</form>
-
-					<form id="subscriptionForm" action="/subscribe/" method="post">
-						<label for="email">Email:</label>
-						<input type="email" id="email" name="email" required>
-						<button id="subscribeButton" type="submit">Subscribe</button>
-					</form>
-
-				</div>
-				<div id="blogColumn"
-					style=" display: flex; flex-direction: column; overflow: scroll; width: 60vw; transition: all; transition-duration: 500ms; height: 100vh;">
-					<h1 style="margin-top: 20%;">About us:</h1>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h2>Post 1 Title</h2>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<h1>Blog:</h1>
-					<h1 style="margin-top: 32px;">Blog:</h1>
-					<h5>by Roy Centralia</h5>
-					<h6>Posted on 3/31/24</h6>
-					<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-						tempor incididunt ut
-						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-						laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-						voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-			</div>
-		</div>
-		<button id="openBlog"
-			style="width: auto; position: absolute; bottom: 0; right: 0;  height: 100px; width: calc(20% - 24px); border-radius: 20px  0 0 0;">Read
-			our blog > </button>
+		<div class="mobile-navigation"></div>
 
 	</div>
+	</div>
+	</div> <!-- .site-header -->
+	<div class="hero" id="splashScreen"
+		style="height: 95vh; display: flex; width: 100%; flex-direction: column; align-items: center;">
+		<button id="prev"
+			style="position: absolute; top: 50%; left: 0; z-index: 100; margin: 24px; height: 40px;">Previous</button>
+		<button id="next"
+			style="position: absolute; top: 50%; right: 0; z-index: 100; margin: 24px; height: 70px; width: 70px; border-radius: 50%;">Next</button>
+		<div id="slideshow" class="linkedSection" style="width: 100%; height: 100%; position: fixed; z-index: -1;">
+			<!-- <li data-bg-image="{% static 'images/image.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li>
+			<li data-bg-image="{% static 'images/flower1.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li>
+			<li data-bg-image="{% static 'images/flower2.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li>
+			<li data-bg-image="{% static 'images/flower3.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li>
+			<li data-bg-image="{% static 'images/flower4.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li>
+			<li data-bg-image="{% static 'images/flower5.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li>
+			<li data-bg-image="{% static 'images/flower6.jpg' %}">
+				<div class="container" style="height: 100%; display: none;"></div>
+			</li> -->
+		</div>
+		<div id="slideshowOverlay"
+			style="position: absolute; display: flex; height: 100%; width: 100%; flex-direction: column; padding-top: calc(30px * 2 + 40px); justify-content: center; align-items: center; max-width: 1170px;">
+
+			<h1
+				style="font-size: 60px; font-size: 4.2857142857em; color: #ecb540; text-shadow: 5px 5px 5px #222; text-align: center; ">
+				“They make my heart sing!”<br> – Denyse D.</h1>
+			<div style="display: flex; justify-content: center; align-items: center;">
+				<img src="{% static 'images/icontransparent3.png' %}"
+					style="margin: 0 auto; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222); opacity: .6;">
+				<img src="{% static 'images/logo.svg' %}"
+					style="margin: 0 auto; position: absolute; height: 200px; width: 200px;">
+			</div>
+			<h1
+				style="font-size: 60px;color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); margin-top: 2%; text-align: center;">
+				Please excuse our appearance - this site is still under construction.</h1>
+			<!-- <a href="#" class="button">Get more information</a> -->
+		</div>
+	</div>
+
+	<main class="main-content"
+		style="background-color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+		<div id="aboutUsFragment" style="transform: translate(0, calc(-10px * 2));"></div>
+		<h1 id="aboutUs" class="linkedSection"
+			style="text-align: center; font-family: 'Belgrano', 'Roboto Slab', sans-serif; max-width: 1170px; align-content: center; margin-top: 5vh;">
+			<span style="font-size: 2em;">W</span>elcome to the official website of the Swedenborg Chapel Wildflower
+			Society, located at 50 Quincy Street, Cambridge, MA, 02138.
+			<br>
+			<br>
+			<br>
+			Please send your comments and inquiries to us at <a href="mailto:chapelwildflowers@gmail.com"
+				style="text-decoration: underline;">chapelwildflowers@gmail.com</a>.
+		</h1>
+		<div style="display: flex; width: 100%; padding-top: 4rem; padding-bottom:4rem; max-width: 1170px;">
+			<form id="imageForm" style="flex:1; display: flex; flex-direction: column; margin-right: 4rem;"
+				action="/imageSubmissions/" method="post" enctype="multipart/form-data">
+				<label for="fileInput" style="font-size: 1.5em; color: black; margin-top: 1rem;">Upload your own photos
+					of the wildflowers here:</label>
+				<input type="file" id="fileInput" name="myfile" accept="image/*" multiple
+					style=" box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.3); margin-top: 1rem;">
+				<img id="preview" width="200px" height="200px" style="align-self: center; margin-top: 1rem;">
+				<button type="submit" id="uploadButton"
+					style="max-width: 200px; align-self: flex-end; text-align: center; margin-top: 1rem; font-size: 1rem;">Upload</button>
+			</form>
+
+			<form id="subscriptionForm" style="flex: 1;display: flex; flex-direction: column; margin-left: 4rem;"
+				action="/subscribe/" method="post">
+				<label for="email" style="font-size: 1.5em; color: black;margin-top: 1rem;">Or subscribe to our blog
+					here:</label>
+				<input type="email" id="email" name="email" placeholder="Type your email here"
+					style="font-size: 1.5em;  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.3);margin-top: 1rem;"
+					required>
+				<button id="subscribeButton" type="submit"
+					style="max-width: 200px; align-self: flex-end; text-align: center; margin-top: auto; font-size: 1rem;">Subscribe</button>
+			</form>
+
+		</div>
+		<div id="photosAndBlog" style="display: flex; padding: 6rem; width: 100%;">
+			<div id="photosFragment" style="transform: translate(0, calc(-10px * 2));"> </div>
+			<div id="photos" class="linkedSection" style="flex: 1; margin-left: 4rem;">
+				<div class="hero">
+					<ul class="slides">
+						<li data-bg-image="{% static 'images/image.jpg' %}">
+
+						</li>
+						<li data-bg-image="{% static 'images/flower1.jpg' %}">
+						</li>
+						<li data-bg-image="{% static 'images/flower2.jpg' %}">
+						</li>
+						<li data-bg-image="{% static 'images/flower3.jpg' %}">
+						</li>
+						<li data-bg-image="{% static 'images/flower4.jpg' %}">
+						</li>
+						<li data-bg-image="{% static 'images/flower5.jpg' %}">
+						</li>
+						<li data-bg-image="{% static 'images/flower6.jpg' %}">
+						</li>
+					</ul>
+				</div> <!-- hero -->
+			</div>
+			<div id="blog" class="linkedSection"
+				style="flex: 1; font-family: 'Belgrano', 'Roboto Slab', sans-serif; margin-left: 4rem; display: flex; flex-direction: column;">
+				<div id="blogFragment" style="transform: translate(0, calc(-10px * 2));"></div>
+				<h1
+					style="margin-top: 32px; font-family: 'Belgrano', 'Roboto Slab', sans-serif; align-self: center; text-decoration: underline; margin-bottom: 1rem; margin-top: 2rem;">
+					Blog:</h1>
+				<h2 style="margin-top: 5rem;">Post 1 Title</h2>
+				<h3>by Roy Centralia</h3>
+				<h4>Posted on 3/31/24</h4>
+				<p style="width: 100%; font-family: 'Belgrano', 'Roboto Slab', sans-serif; font-size:1.5rem;">
+					Lorem ipsum dolor sit amet,
+					consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+					cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h2 style="margin-top: 5rem;">Post 2 Title</h2>
+				<h3>by Roy Centralia</h3>
+				<h4>Posted on 3/31/24</h4>
+				<p style="width: 100%; font-family: 'Belgrano', 'Roboto Slab', sans-serif; font-size:1.5rem;">
+					Lorem ipsum dolor sit amet,
+					consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut
+					labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+					laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+					voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+					cupidatat
+					non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<button id="subscribeButton" type="submit"
+					style="width: 400px; align-self: center; justify-self: center; text-align: center; margin-top: auto; font-size: 1rem; margin-top: 2rem;">Read
+					more of our blog</button>
+			</div>
+		</div>
+		<!-- <div class="map" data-latitude="42.376563" data-longitude="-71.113463" style="display: block; width: 100%;"> -->
+
+	</main>
+	<div style="height: 25rem; width: 100%; position: relative;">
+		<gmp-map id="map" center="42.37650680541992,-71.11373138427734" zoom="14" map-id="DEMO_MAP_ID"
+			style="height: calc(25rem + 280px * 2); width: 100%; position: fixed; z-index: -1; bottom: 0; display: none;">
+			<gmp-advanced-marker position="42.37650680541992,-71.11373138427734"
+				title="My location"></gmp-advanced-marker>
+		</gmp-map>
+		<div
+			style="height: 100%; width: 100%; position: absolute;pointer-events: none; box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.3); z-index: 100;">
+		</div>
+	</div>
+	<div id="footer"
+		style="background: #4a3173; height: 280px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+		<div style="display: flex; justify-content: space-between; padding: 1rem; width: 1170px;">
+			<div>
+				<h3 style="color: white; font-size: 1.5rem; margin-top: -.5rem">Swedenborg Chapel Wildflowers</h3>
+				<p style="color: white;">50 Quincy Street</p>
+				<p style="color: white;">Cambridge, MA</p>
+			</div>
+			<div>
+				<h3 style="color: white;">Contact</h3>
+				<p style="color: white;">Phone: <a href="tel:123-456-7890"
+						style="color: white; text-decoration: underline;">123-456-7890</a></p>
+				<p style="color: white;">Email: <a href="mailto:chapelwildflowers@gmail.com"
+						style="color: white; text-decoration: underline;">chapelwildflowers@gmail.com</a></p>
+				<p style="color: white;">Fax: 987-654-3210</p>
+			</div>
+			<div>
+				<h3 style="color: white;">Hours</h3>
+				<p style="color: white;">Monday-Friday: 9am-5pm</p>
+				<p style="color: white;">Saturday: 10am-4pm</p>
+				<p style="color: white;">Sunday: Closed</p>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- <body> -->
+	<div id="mainContainer"
+		style="display: flex; flex-direction: row; transition: all; transition-duration: 500ms; height: 100vh; width: 100%; display: none;">
+		<div id="slideshowColumn"
+			style="height: 100%; flex:1; transition: all; transition-duration: 500ms; overflow: hidden; position: relative; display: flex; flex-direction: column;">
+			<div id="NOTslideshow" style="flex: 8; width: 100%;">
+				<button id="NOTprev"
+					style="position: absolute; top: 50%; z-index: 100; margin: 24px; height: 40px;">Previous</button>
+				<button id="NOTnext"
+					style="position: absolute; top: 50%; right: 0; z-index: 100; margin: 24px; height: 70px; width: 70px; border-radius: 50%;">Next</button>
+			</div>
+			<div id="slideshowCarousel"
+				style="display: flex; flex: 1; flex-direction: row; width: 100%; height: 200px; overflow: hidden; display: none;">
+			</div>
+		</div>
+		<div id="rightColumn"
+			style="flex: 1;display: flex; flex-direction: column; padding: 40px; width: 20vw;  transition: all; transition-duration: 500ms;">
+			<h1 style="font-family: sans-serif; color: black; text-align: start; font-size: 3rem;">Swedenborg
+				Chapel Wildflowers
+			</h1>
+			<img src="{% static 'images/logo.svg' %}" alt="" class="" style="width: 200px">
+			<h1>“They make my heart sing!”</h1>
+			<h1> - Denyse D.</h1>
+			<h1>This site is under construction.</h1>
+			<br>
+			<h2
+				style="font-family: sans-serif; color: rgb(red, rgb(110, 110, 110), blue); text-align: start; font-size: 18px;">
+				50 Quincy St., Cambridge, MA 02138</h2>
+			<!-- <form id="imageForm" action="/imageSubmissions/" method="post" enctype="multipart/form-data">
+				<label for="fileInput">Upload your photos of the wildflowers:</label>
+				<input type="file" id="fileInput" name="myfile" accept="image/*" multiple>
+				<img id="preview" width="200px">
+				<button type="submit" id="uploadButton">Upload</button>
+			</form>
+
+			<form id="subscriptionForm" action="/subscribe/" method="post">
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+				<button id="subscribeButton" type="submit">Subscribe</button>
+			</form> -->
+
+			<h1 style="margin-top: 20%;">About us:</h1>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h2>Post 1 Title</h2>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<h1>Blog:</h1>
+			<h1 style="margin-top: 32px;">Blog:</h1>
+			<h5>by Roy Centralia</h5>
+			<h6>Posted on 3/31/24</h6>
+			<p style="width: 100%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+				tempor incididunt ut
+				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+				laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+				voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+				non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+	</div>
+	<!-- <button id="openBlog"
+			style="width: auto; position: absolute; bottom: 0; right: 0;  height: 100px; width: calc(20% - 24px); border-radius: 20px  0 0 0;">Read
+			our blog > </button> -->
+
+	<!--  -->
+
+	<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+	<!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script> -->
+	<script src="{% static 'js/plugins.js' %}"></script>
+	<script src="{% static 'js/app.js' %}"></script>
 	<script>
 
+		var oldScrolledHalf;
+
+		function toggleMapIfScrolledHalf() {
+			var newScrolledHalf = window.scrollY >= window.innerHeight / 2 + 300;
+			if (newScrolledHalf !== oldScrolledHalf) {
+				if (newScrolledHalf) {
+					document.getElementById('map').style.display = 'block';
+				} else {
+					document.getElementById('map').style.display = 'none';
+				}
+				oldScrolledHalf = newScrolledHalf;
+			}
+
+		}
+
+		var oldScrolledHalf;
+
+		window.addEventListener("load",(e) => {
+			console.log("LOAD")
+			toggleMapIfScrolledHalf();
+		})
+
+		window.addEventListener("scroll",(e) => {
+			console.log("LOAD")
+			toggleMapIfScrolledHalf();
+		})
+		
+
+
+		console.log("googd");
+		document.getElementById('aboutUsLink').addEventListener('click', function (e) {
+			e.preventDefault();
+			console.log("ABOUT US")
+			document.getElementById("aboutUsFragment").scrollIntoView({ behavior: 'smooth' });
+		});
+		document.getElementById('photosLink').addEventListener('click', function (e) {
+			e.preventDefault();
+			document.getElementById("photosFragment").scrollIntoView({ behavior: 'smooth' });
+		});
+		document.getElementById('blogLink').addEventListener('click', function (e) {
+			e.preventDefault();
+			console.log("ABOUT US")
+			document.getElementById("blogFragment").scrollIntoView({ behavior: 'smooth' });
+		});
 		document.getElementById('fileInput').addEventListener('change', function (e) {
 			const file = e.target.files[0];
 			const reader = new FileReader();
@@ -291,20 +586,20 @@
 			images[currentIndex].style.display = 'block';
 		});
 
-		var blogOpen = false;
-		var blogButton = document.getElementById('openBlog')
-		blogButton.addEventListener('click', () => {
+		// var blogOpen = false;
+		// var blogButton = document.getElementById('openBlog')
+		// blogButton.addEventListener('click', () => {
 
-			if (blogOpen) {
-				document.getElementById('slideshowColumn').style.flex = '4';
-				blogButton.innerHTML = "Read our blog ->"
-				blogOpen = false;
-			} else {
-				document.getElementById('slideshowColumn').style.flex = '.666';
-				blogButton.innerHTML = "<- View our photos"
-				blogOpen = true;
-			}
-		});
+		// 	if (blogOpen) {
+		// 		document.getElementById('slideshowColumn').style.flex = '4';
+		// 		blogButton.innerHTML = "Read our blog ->"
+		// 		blogOpen = false;
+		// 	} else {
+		// 		document.getElementById('slideshowColumn').style.flex = '.666';
+		// 		blogButton.innerHTML = "<- View our photos"
+		// 		blogOpen = true;
+		// 	}
+		// });
 		console.log("NOT NOT NOTNOT NOT NOTNOT NOT NOTNOT NOT NOTNOT NOT NOTNOT NOT NOTNOT NOT NOTNOT NOT NOT")
 		document.getElementById('subscriptionForm').addEventListener('submit', (e) => {
 			e.preventDefault();
@@ -355,80 +650,11 @@
 		// });
 	</script>
 
-	<div class="hero" style="display: none;">
-		<ul class="slides">
-			<li data-bg-image="{% static 'images/slider-1.jpg' %}">
-				<div class="container">
-					<div class="slide-content">
-						<h1 class="slide-title">“They make my heart sing!”<br> – Denyse D.</h1>
-						<br>
-						<div class="container" style="position: relative;">
-							<img src="{% static 'images/icontransparent3.png' %}"
-								style="display: block; margin: 0 auto; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222); opacity: .6;">
-							<img src="{% static 'images/icontransparent2.png' %}"
-								style="display: block; margin: 0 auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-						</div>
-						<br>
-						<small class="date">This site is under construction.</small>
-						<p style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); color:#FFFFFF">50 Quincy Street,
-							Cambridge, MA<br><br>
 
-							Please send comments and/or inquiries to:<br><br>
-
-							chapelwildflowers@gmail.com</p>
-						<!-- <a href="#" class="button">Get more information</a> -->
-					</div>
-				</div>
-			</li>
-		</ul>
-	</div>
-
-	<main class="main-content" style="display: none;">
-		<div id="about" class="fullwidth-block">
-			<div class="container">
-				<div class="hero">
-					<ul class="slides">
-						<li data-bg-image="{% static 'images/image.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-						<li data-bg-image="{% static 'images/flower1.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-						<li data-bg-image="{% static 'images/flower2.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-						<li data-bg-image="{% static 'images/flower3.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-						<li data-bg-image="{% static 'images/flower4.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-						<li data-bg-image="{% static 'images/flower5.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-						<li data-bg-image="{% static 'images/flower6.jpg' %}">
-							<div class="container" style="height: 1500px;">
-							</div>
-						</li>
-					</ul>
-				</div> <!-- hero -->
-			</div> <!-- .container -->
-		</div> <!-- #about -->
-		<!--<div class="map" data-latitude="42.376563" data-longitude="-71.113463"></div>-->
-	</main>
 	</div>
 
 
-	<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>
-	<script src="{% static 'js/plugins.js' %}"></script>
-	<script src="{% static 'js/app.js' %}"></script>
+
 
 </body>
 
